@@ -1,25 +1,24 @@
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
-    mode: 'development',
     module: {
         rules: [{
             test: /\.js$/,
             exclude: /(node_modules|bower_components)/,
             loader: 'babel-loader',
             options: {
-                presets: ['@babel/preset-env']
+                presets: ['@babel/preset-env'],
+                plugins: ['@babel/plugin-transform-runtime'],
+                cacheDirectory: true
             }
-        }, {
-            test: /\.less$/,
-            use: [{
-                loader: 'style-loader', // creates style nodes from JS strings
-            }, {
-                loader: 'css-loader', // translates CSS into CommonJS
-            }, {
-                loader: 'less-loader', // compiles Less to CSS
-            }]
         }]
     },
-    devServer: {
-        contentBase: './dist'
-    }
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: path.join(__dirname, '../src/index.html'),
+            chunks: ['main']
+        }),
+    ]
 };
